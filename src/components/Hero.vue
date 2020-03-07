@@ -195,8 +195,8 @@ export default {
           opacity: 1,
           y: 0,
           duration: 0.4,
-          ease: Power3.easeIn,
-          delay: -0.8
+          ease: Power3.easeOut,
+          delay: -0.5
         },
         "animateContent"
       )
