@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { TimelineMax, Power3, RoughEase } from "gsap/all";
+import { gsap, Power3, RoughEase } from "gsap/all";
 import Joystick from "./Joystick";
 
 export default {
@@ -87,7 +87,7 @@ export default {
 
     const { darkTitle, lightTitle, titleContainer } = this.$refs;
 
-    let timeline = new TimelineMax({ paused: true });
+    let timeline = gsap.timeline({ paused: true });
 
     let yDuration = "1";
 
