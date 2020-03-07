@@ -65,9 +65,11 @@ h5 {
 }
 
 p {
-  @include fontSize(18px);
-
-  font-family: $text-font-stack;
+  font-family: SangBleu Versailles;
+  font-style: normal;
+  font-weight: normal;
+  font-size: rem(16px);
+  line-height: 24px;
 
   &.small {
     @include fontSize(15px);
@@ -76,9 +78,12 @@ p {
 }
 
 small {
-  @include fontSize(9px);
-  letter-spacing: $letter-spacing-special;
+  font-family: Pilat Extended, sans-serif;
+  font-size: rem(8px);
+  line-height: rem(10px);
+  letter-spacing: 0.15em;
   text-transform: uppercase;
+  font-weight: bold;
 }
 
 strong {

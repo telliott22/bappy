@@ -2,41 +2,73 @@
   <div class="hero">
 
     <div
-      class="hero__signature"
+      class="hero__loading-screen"
       ref="signature"
     >
+
+      <div class="hero__signature">
+
+      </div>
+
+      <small>Loading</small>
 
     </div>
 
     <div
-      class="hero__left"
-      ref="left"
+      class="hero__animated-text hero__animated-text--left"
+      ref="animatedTextLeft"
     >
+
+      <div
+        class="hero__title"
+        ref="titleContainer"
+      >
+        <h1 ref="lightTitle">Baptiste Dumas</h1>
+        <h1 ref="darkTitle">Baptiste Dumas</h1>
+      </div>
+
+      <div
+        class="hero__content"
+        ref="content"
+      >
+
+        <p> I’m a digital designer who like analysing problems and solving them. I have always seen design as an exciting challenge to solve the web’s usability, where beautiful aesthetics and functionality exist in harmony. I design interfaces to be used with high attention to detail. I love geometry, architecture and generative design. I'm intrigued by design process and how to continually enhance it. I have also been a proud member of the Awwwards Jury panel since January 2016 lorem situm estate posum.</p>
+
+      </div>
+
       <img
         src="../assets/images/baptiste.svg"
         alt="Baptiste"
-        ref="leftImage"
+        ref="animatedTextLeftSvg"
       >
     </div>
 
     <joystick ref="joystick" />
 
     <div
-      class="hero__right"
-      ref="right"
+      class="hero__animated-text hero__animated-text--right"
+      ref="animatedTextRight"
     >
       <img
         src="../assets/images/dumas.svg"
         alt="Dumas"
-        ref="rightImage"
+        ref="animatedTextRightSvg"
       >
     </div>
+
+    <!-- <div class="hero__content hero__content--left">
+
+      <div class="hero__title">
+        <h1>Baptiste Dumas</h1>
+      </div>
+
+    </div> -->
 
   </div>
 </template>
 
 <script>
-import { TimelineMax, Power4, RoughEase } from "gsap/all";
+import { TimelineMax, Power3, RoughEase } from "gsap/all";
 import Joystick from "./Joystick";
 
 export default {
@@ -45,12 +77,15 @@ export default {
     Joystick
   },
   mounted() {
-    const left = this.$refs.left;
-    const leftImage = this.$refs.leftImage;
-    const right = this.$refs.right;
-    const rightImage = this.$refs.rightImage;
+    const animatedTextLeft = this.$refs.animatedTextLeft;
+    const animatedTextLeftSvg = this.$refs.animatedTextLeftSvg;
+    // const animatedTextRight = this.$refs.animatedTextRight;
+    const animatedTextRightSvg = this.$refs.animatedTextRightSvg;
     const joystick = this.$refs.joystick.$el;
     const signature = this.$refs.signature;
+    const content = this.$refs.content;
+
+    const { darkTitle, lightTitle, titleContainer } = this.$refs;
 
     let timeline = new TimelineMax({ paused: true });
 
@@ -65,7 +100,7 @@ export default {
     let leftTopFinishPosition = viewPortSizeHeight - verticalSeperationPoint;
 
     //Get postion of left section
-    let leftBoundingClientRect = left.getBoundingClientRect();
+    let leftBoundingClientRect = animatedTextLeft.getBoundingClientRect();
 
     //Move joystick to correct position
     joystick.style.left = leftBoundingClientRect.right - 58 + "px";
@@ -83,7 +118,7 @@ export default {
         }
       })
       .fromTo(
-        leftImage,
+        animatedTextLeftSvg,
         {
           opacity: 0
         },
@@ -91,7 +126,7 @@ export default {
           opacity: 1,
           duration: flickeringTextDuration,
           ease: RoughEase.ease.config({
-            template: Power4.easeInOut,
+            template: Power3.easeInOut,
             strength: 2,
             points: flickeringTextPoints,
             taper: "out",
@@ -103,7 +138,7 @@ export default {
         "flickeringText"
       )
       .fromTo(
-        rightImage,
+        animatedTextRightSvg,
         {
           opacity: 0
         },
@@ -111,7 +146,7 @@ export default {
           opacity: 1,
           duration: flickeringTextDuration,
           ease: RoughEase.ease.config({
-            template: Power4.easeInOut,
+            template: Power3.easeInOut,
             strength: 2,
             points: flickeringTextPoints,
             taper: "out",
@@ -122,29 +157,68 @@ export default {
         "flickeringText"
       )
       .to(
-        left,
+        animatedTextLeftSvg,
         {
           top: leftTopFinishPosition + "px",
           duration: yDuration,
-          ease: Power4.easeInOut
+          ease: Power3.easeInOut
         },
         "animateY"
       )
       .to(
-        right,
+        animatedTextRightSvg,
         {
           bottom: verticalSeperationPoint + "px",
           duration: yDuration,
-          ease: Power4.easeInOut
+          ease: Power3.easeInOut
+        },
+        "animateY"
+      )
+      .to(
+        titleContainer,
+        {
+          opacity: 1,
+          duration: 0.1,
+          delay: "0.2"
         },
         "animateY"
       )
       .to(joystick, {
         opacity: 1,
         duration: 0.4,
-        ease: Power4.easeOut,
+        ease: Power3.easeOut,
         delay: -0.4
-      });
+      })
+      .to(
+        content,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.4,
+          ease: Power3.easeIn,
+          delay: -0.8
+        },
+        "animateContent"
+      )
+      .to(
+        lightTitle,
+        {
+          rotationX: "90deg",
+          duration: 0.4,
+          delay: -0.7
+        },
+        "animateContent"
+      )
+      .to(
+        darkTitle,
+        {
+          rotationX: "0deg",
+          y: "6px",
+          duration: 0.4,
+          delay: -0.5
+        },
+        "animateContent"
+      );
 
     setTimeout(() => {
       timeline.resume();

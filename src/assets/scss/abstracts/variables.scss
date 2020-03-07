@@ -5,7 +5,7 @@
 // Basic Colours
 $white: #ffffff;
 $black: #000000;
-$grey: #C4C4C4;
+$grey: #848384;
 $yellow: #F4F91D;
 $blue: #0A64EB;
 
@@ -29,8 +29,9 @@ $letter-spacing-special: 2px;
 $letter-spacing-normal: 1px;
 
 /// Regular font family
-$text-font-stack: "Arial",
-sans-serif !default;
+$text-font-stack: Pilat Extended,
+sans-serif;
+
 
 $alt-text-font-stack: 'IBM Plex Mono',
 monospace;
