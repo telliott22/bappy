@@ -16,15 +16,21 @@
     height: 116px;
     cursor: pointer;
 
+    transition: transform 0.1s ease-in-out;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+
     &::after {
         content: url("../images/crosshair.svg");
         display: block;
-        height: 41px;
-        width: 41px;
-
+        height: rem(41px);
+        width: rem(41px);
         background-image: center;
         background-repeat: no-repeat;
         background-size: contain;
+
     }
 
 }

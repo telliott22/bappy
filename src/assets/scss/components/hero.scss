@@ -24,11 +24,25 @@
   &__left {
     position: relative;
     // flex: 1;
+
+    img {
+      height: 100vh;
+      // width: 100%;
+      object-fit: contain;
+    }
   }
 
-  img {
-    height: 100vh;
-    // width: 100%;
-    object-fit: contain;
+  &__signature {
+    content: url("../images/signature.svg");
+    display: block;
+    width: rem(300px);
+    background-image: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
   }
 }
