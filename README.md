@@ -1,5 +1,7 @@
 # bappy
 
+Built with Vue and GSAP from this [dribble](https://dribbble.com/shots/7863961-Portfolio-2019-2020)
+
 ## Project setup
 
 ```
