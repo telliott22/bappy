@@ -1,5 +1,5 @@
-$left-width: calc(59% - 5px);
-$right-width: calc(41% - 5px);
+$left-width: 53%;
+$right-width: 46.5%;
 $vertical-seperation-point: 180px;
 
 .hero {
@@ -11,31 +11,30 @@ $vertical-seperation-point: 180px;
   margin: 0 rem(46px);
 
   &__animated-text {
+    position: relative;
 
     &--left {
       margin-right: 10px;
-      // width: $left-width;
+      width: $left-width;
 
       img {
-        object-position: right;
+        object-position: right center;
       }
     }
 
     &--right {
-      // width: $right-width;
+      width: $right-width;
 
       img {
-        object-position: left;
+        object-position: left center;
       }
     }
 
-    position: relative;
-
     img {
-      position: relative;
-      height: 100vh;
+      position: absolute;
+      max-height: 100%;
       object-fit: contain;
-      // width: 100%;
+      width: 100%;
     }
   }
 
@@ -98,20 +97,21 @@ $vertical-seperation-point: 180px;
         transform: rotateX(-90deg);
       }
     }
-
   }
 
   &__content {
-
     display: flex;
     justify-content: center;
     align-items: center;
     position: absolute;
-    padding: 0 27%;
 
     height: calc(100% - #{$vertical-seperation-point});
     opacity: 0;
     transform: translateY(10px);
 
+    p {
+      max-width: 70%;
+      margin: auto;
+    }
   }
 }
