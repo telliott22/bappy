@@ -7,8 +7,9 @@ $vertical-seperation-point: 180px;
   flex-direction: row;
   justify-content: center;
   height: 100vh;
-  width: calc(100vw - 92px);
-  margin: 0 rem(46px);
+  margin: 0 rem(10px);
+
+  margin-bottom: calc(100vh - #{$vertical-seperation-point});
 
   &__animated-text {
     position: relative;
@@ -101,17 +102,26 @@ $vertical-seperation-point: 180px;
 
   &__content {
     display: flex;
-    justify-content: center;
     align-items: center;
     position: absolute;
+    justify-content: baseline;
 
     height: calc(100% - #{$vertical-seperation-point});
     opacity: 0;
     transform: translateY(10px);
 
+    @media (min-width: $medium) {
+      justify-content: center;
+    }
+
     p {
-      max-width: 70%;
-      margin: auto;
+      padding: 10px;
+
+      @media (min-width: $medium) {
+        padding: 0;
+        max-width: 70%;
+        margin: auto;
+      }
     }
   }
 }

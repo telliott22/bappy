@@ -1,15 +1,9 @@
-.container{
+.container {
+  padding: 40px;
 
+  &__left {
+  }
 
-display:flex;
-
-    &__left{
-
-    }
-
-    &__right{
-
-
-        
-    }
+  &__right {
+  }
 }

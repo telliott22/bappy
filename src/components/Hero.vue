@@ -95,7 +95,18 @@ export default {
 
       const joystick = this.$refs.joystick.$el;
 
-      let timeline = gsap.timeline({ paused: true });
+      //Scroll to top of page on load and prevent scroll
+      const body = document.getElementsByTagName("body")[0];
+      body.classList.add("noscroll");
+      window.scrollTo(0, 0);
+
+      let timeline = gsap.timeline({
+        paused: true,
+        onComplete: () => {
+          //enable scroll after animation finishes
+          body.classList.remove("noscroll");
+        }
+      });
 
       let yDuration = "1";
 
