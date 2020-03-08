@@ -3,7 +3,7 @@
 
     <div
       class="hero__loading-screen"
-      ref="signature"
+      ref="loadingScreen"
     >
 
       <div class="hero__signature">
@@ -56,14 +56,6 @@
       >
     </div>
 
-    <!-- <div class="hero__content hero__content--left">
-
-      <div class="hero__title">
-        <h1>Baptiste Dumas</h1>
-      </div>
-
-    </div> -->
-
   </div>
 </template>
 
@@ -73,156 +65,211 @@ import Joystick from "./Joystick";
 
 export default {
   name: "Hero",
+  data() {
+    return {
+      verticalSeperationPoint: 180
+    };
+  },
   components: {
     Joystick
   },
-  mounted() {
-    const animatedTextLeft = this.$refs.animatedTextLeft;
-    const animatedTextLeftSvg = this.$refs.animatedTextLeftSvg;
-    // const animatedTextRight = this.$refs.animatedTextRight;
-    const animatedTextRightSvg = this.$refs.animatedTextRightSvg;
-    const joystick = this.$refs.joystick.$el;
-    const signature = this.$refs.signature;
-    const content = this.$refs.content;
+  methods: {
+    moveJoystick(x, y) {
+      const joystick = this.$refs.joystick.$el;
 
-    const { darkTitle, lightTitle, titleContainer } = this.$refs;
-
-    let timeline = gsap.timeline({ paused: true });
-
-    let yDuration = "1";
-
-    const viewPortSizeHeight = document.documentElement.clientHeight;
-
-    //Used to calcuate where on the screen the sections will meet vertically
-    let verticalSeperationPoint = 180;
-
-    //Where the left section will animate down to
-    let leftTopFinishPosition = viewPortSizeHeight - verticalSeperationPoint;
-
-    //Get postion of left section
-    let leftBoundingClientRect = animatedTextLeft.getBoundingClientRect();
-
-    //Move joystick to correct position
-    joystick.style.left = leftBoundingClientRect.right - 58 + "px";
-    joystick.style.top = leftTopFinishPosition - 58 + "px";
-
-    const flickeringTextPoints = 50;
-    const flickeringTextDuration = 0.5;
-
-    timeline
-      .to(signature, {
-        opacity: 0,
-        duration: 0,
-        onComplete: () => {
-          signature.style.display = "none";
-        }
-      })
-      .fromTo(
-        animatedTextLeftSvg,
-        {
-          opacity: 0
-        },
-        {
-          opacity: 1,
-          duration: flickeringTextDuration,
-          ease: RoughEase.ease.config({
-            template: Power3.easeInOut,
-            strength: 2,
-            points: flickeringTextPoints,
-            taper: "out",
-            randomize: false,
-            clamp: true
-          }),
-          delay: "0.1"
-        },
-        "flickeringText"
-      )
-      .fromTo(
-        animatedTextRightSvg,
-        {
-          opacity: 0
-        },
-        {
-          opacity: 1,
-          duration: flickeringTextDuration,
-          ease: RoughEase.ease.config({
-            template: Power3.easeInOut,
-            strength: 2,
-            points: flickeringTextPoints,
-            taper: "out",
-            randomize: false,
-            clamp: true
-          })
-        },
-        "flickeringText"
-      )
-      .to(
-        animatedTextLeftSvg,
-        {
-          top: leftTopFinishPosition + "px",
-          duration: yDuration,
-          ease: Power3.easeInOut
-        },
-        "animateY"
-      )
-      .to(
-        animatedTextRightSvg,
-        {
-          bottom: verticalSeperationPoint + "px",
-          duration: yDuration,
-          ease: Power3.easeInOut
-        },
-        "animateY"
-      )
-      .to(
+      //Move joystick to correct position
+      joystick.style.left = x + "px";
+      joystick.style.top = y + "px";
+    },
+    initAnimation() {
+      const {
+        darkTitle,
+        lightTitle,
         titleContainer,
-        {
-          opacity: 1,
-          duration: 0.1,
-          delay: "0.2"
-        },
-        "animateY"
-      )
-      .to(joystick, {
-        opacity: 1,
-        duration: 0.4,
-        ease: Power3.easeOut,
-        delay: -0.4
-      })
-      .to(
         content,
-        {
+        loadingScreen,
+        animatedTextRightSvg,
+        animatedTextLeftSvg,
+        animatedTextLeft
+      } = this.$refs;
+
+      const joystick = this.$refs.joystick.$el;
+
+      let timeline = gsap.timeline({ paused: true });
+
+      let yDuration = "1";
+
+      const viewPortSizeHeight = document.documentElement.clientHeight;
+
+      //Where the left section will animate down to
+      let leftTopFinishPosition =
+        viewPortSizeHeight - this.verticalSeperationPoint;
+
+      const flickeringTextPoints = 50;
+      const flickeringTextDuration = 0.5;
+
+      timeline
+        .to(loadingScreen, {
+          opacity: 0,
+          duration: 0,
+          onComplete: () => {
+            //Get postion of left section - calculating after animation has started so element is fully rendered. Wasn't working properly above
+            let leftBoundingClientRect = animatedTextLeft.getBoundingClientRect();
+
+            //Move joystick to initial position
+            this.moveJoystick(
+              leftBoundingClientRect.right - 58,
+              leftTopFinishPosition - 58
+            );
+
+            //Have to vertically center the images with javascript to make them fully responsive
+            //Get the size of the image inside it's container
+            let leftSvgBoundingClientRect = animatedTextLeftSvg.getBoundingClientRect();
+
+            //Find the difference between that and the viewport and half it
+            const imageMargin =
+              (viewPortSizeHeight - leftSvgBoundingClientRect.height) / 2 +
+              "px";
+
+            //Vertically center images in container
+            animatedTextLeftSvg.style.top = imageMargin;
+            animatedTextRightSvg.style.bottom = imageMargin;
+
+            //Hide loading screen
+            loadingScreen.style.display = "none";
+          }
+        })
+        .fromTo(
+          animatedTextLeftSvg,
+          {
+            opacity: 0
+          },
+          {
+            opacity: 1,
+            duration: flickeringTextDuration,
+            ease: RoughEase.ease.config({
+              template: Power3.easeInOut,
+              strength: 2,
+              points: flickeringTextPoints,
+              taper: "out",
+              randomize: false,
+              clamp: true
+            }),
+            delay: "0.1"
+          },
+          "flickeringText"
+        )
+        .fromTo(
+          animatedTextRightSvg,
+          {
+            opacity: 0
+          },
+          {
+            opacity: 1,
+            duration: flickeringTextDuration,
+            ease: RoughEase.ease.config({
+              template: Power3.easeInOut,
+              strength: 2,
+              points: flickeringTextPoints,
+              taper: "out",
+              randomize: false,
+              clamp: true
+            })
+          },
+          "flickeringText"
+        )
+        .to(
+          animatedTextLeftSvg,
+          {
+            top: leftTopFinishPosition + "px",
+            duration: yDuration,
+            ease: Power3.easeInOut
+          },
+          "animateY"
+        )
+        .to(
+          animatedTextRightSvg,
+          {
+            bottom: this.verticalSeperationPoint + "px",
+            duration: yDuration,
+            ease: Power3.easeInOut
+          },
+          "animateY"
+        )
+        .to(
+          titleContainer,
+          {
+            opacity: 1,
+            duration: 0.1,
+            delay: "0.2"
+          },
+          "animateY"
+        )
+        .to(joystick, {
           opacity: 1,
-          y: 0,
           duration: 0.4,
           ease: Power3.easeOut,
-          delay: -0.5
-        },
-        "animateContent"
-      )
-      .to(
-        lightTitle,
-        {
-          rotationX: "90deg",
-          duration: 0.4,
-          delay: -0.7
-        },
-        "animateContent"
-      )
-      .to(
-        darkTitle,
-        {
-          rotationX: "0deg",
-          y: "6px",
-          duration: 0.4,
-          delay: -0.5
-        },
-        "animateContent"
-      );
+          delay: -0.4
+        })
+        .to(
+          content,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.4,
+            ease: Power3.easeOut,
+            delay: -0.5
+          },
+          "animateContent"
+        )
+        .to(
+          lightTitle,
+          {
+            rotationX: "90deg",
+            duration: 0.4,
+            delay: -0.7
+          },
+          "animateContent"
+        )
+        .to(
+          darkTitle,
+          {
+            rotationX: "0deg",
+            y: "6px",
+            duration: 0.4,
+            delay: -0.5
+          },
+          "animateContent"
+        );
 
-    setTimeout(() => {
-      timeline.resume();
-    }, 2000);
+      setTimeout(() => {
+        timeline.resume();
+      }, 2000);
+    },
+    initJoystickResize() {
+      const { animatedTextLeft, animatedTextLeftSvg } = this.$refs;
+
+      window.addEventListener("resize", () => {
+        const viewPortSizeHeight = document.documentElement.clientHeight;
+
+        let leftTopFinishPosition =
+          viewPortSizeHeight - this.verticalSeperationPoint;
+        let leftBoundingClientRect = animatedTextLeft.getBoundingClientRect();
+
+        requestAnimationFrame(() => {
+          this.moveJoystick(
+            leftBoundingClientRect.right - 58,
+            leftTopFinishPosition - 58
+          );
+
+          animatedTextLeftSvg.style.top = leftTopFinishPosition + "px";
+        });
+      });
+    }
+  },
+  mounted() {
+    this.initAnimation();
+    this.initJoystickResize();
   }
 };
 </script>
