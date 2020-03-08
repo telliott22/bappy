@@ -103,7 +103,7 @@ export default {
       let timeline = gsap.timeline({
         paused: true,
         onComplete: () => {
-          //enable scroll after animation finishes
+          //Enable scroll after animation finishes
           body.classList.remove("noscroll");
         }
       });
