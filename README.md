@@ -2,6 +2,8 @@
 
 Built with Vue and GSAP from this [dribble](https://dribbble.com/shots/7863961-Portfolio-2019-2020)
 
+[demo](https://wonderful-bartik-d4e0f4.netlify.com/)
+
 ## Project setup
 
 ```
